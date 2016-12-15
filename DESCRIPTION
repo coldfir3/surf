@@ -1,9 +1,14 @@
 Package: surf
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Surface and topological analysis for tribology
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Authors@R: c(
+  person("Adriano", "Passos", email="adriano.utfpr@gmail.com", role=c("aut","cre")),
+  person("Tiago", "Cousseau", email="tcousseau@utfpr.edu.br", role="aut"))
+Description: Surface and topological analysis for tribology based on measuraments. Bla bla bla bla bla bla.
+Depends: R (>= 3.3.0)
+License: GPL-3
 LazyData: TRUE
+RoxygenNote: 5.0.1
+Imports: imager,
+    zoo
