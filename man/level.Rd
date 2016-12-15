@@ -6,14 +6,16 @@
 \alias{level.imlist}
 \title{Title}
 \usage{
-level(surf)
+level(surf, method = "rot")
 
-\method{level}{cimg}(surf)
+\method{level}{cimg}(surf, method = "rot")
 
-\method{level}{imlist}(surf)
+\method{level}{imlist}(surf, method = "rot")
 }
 \arguments{
 \item{surf}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.}
+
+\item{method}{one of two options: \code{'rot'} or \code{'sub'}.}
 }
 \value{
 a corrected \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
