@@ -2,8 +2,12 @@
 
 S3method(level,cimg)
 S3method(level,imlist)
+export(abbott)
 export(level)
 export(read.surf)
 export(read.zip)
 export(write.cimg)
 export(write.imlist)
+exportMethods(plot)
+exportMethods(print)
+exportMethods(show)
