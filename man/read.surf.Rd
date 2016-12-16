@@ -20,6 +20,7 @@ This function reads a standard '.txt' file and converts it into a \code{cimg} ob
 \examples{
 file <- system.file("extdata", "ground.txt", package = "surf")
 surf <- read.surf(file)
+par(mfrow = c(2,2))
 plot(surf, asp = 1)
 }
 

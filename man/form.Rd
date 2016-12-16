@@ -15,7 +15,7 @@ form(surf, form = "paraboloid")
 \arguments{
 \item{surf}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.}
 
-\item{form}{an optional parameter that overides the information given on formula. Options are: "eliptical", "paraboloid". #enable partial match}
+\item{form}{an optional parameter that overides the information given on formula. Options are: "ellipsoid", "paraboloid". #enable partial match}
 }
 \value{
 a corrected \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
@@ -26,15 +26,13 @@ description
 \examples{
 file <- system.file("extdata", "form.txt", package = "surf")
 surf <- read.surf(file)
-par(mfrow = c(1,2))
+par(mfrow = c(1,3))
 plot(surf, asp = 1)
 plot(form(surf, form = 'paraboloid'), asp = 1)
-
-plot(surf, asp = 1)
-plot(form(surf, value ~ stats::poly(x, 2) + stats::poly(y, 2)), asp = 1)
+plot(form(surf, form = 'ellipsoid'), asp = 1)
 
 file <- system.file("extdata", "form.zip", package = "surf")
 surf <- read.zip(file)
-plot(imager::imlist(c(surf,form(surf))), asp = 1)
+plot(form(surf, form = 'paraboloid'))
 }
 

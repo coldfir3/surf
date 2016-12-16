@@ -25,7 +25,7 @@ level <- function(surf, method = 'rot'){
 #' @rdname level
 #' @method level cimg
 #' @export
-level.cimg <- function(surf, method = 'rot'){
+level.cimg <- function(surf, method = 'sub'){
   df <- as.data.frame(surf)
   model <- stats::lm(value ~ x + y, data = df)
   if(method == 'sub')

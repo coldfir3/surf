@@ -10,6 +10,7 @@
 #' @examples
 #' file <- system.file("extdata", "ground.txt", package = "surf")
 #' surf <- read.surf(file)
+#' par(mfrow = c(2,2))
 #' plot(surf, asp = 1)
 read.surf <- function(file, res = NULL){
 
@@ -42,7 +43,12 @@ read.zip <- function(file, res = NULL){
   if(is.null(res)) # arrumar detecao automatica
 
   filenames <- utils::unzip(file, list = TRUE)$Name
-  data <- lapply(filenames, function(filename) surf::read.surf(base::unz(file, filename)))
+  data <- list()
+  for (filename in filenames){
+    sys.t <- system.time(data <- append(data, list(surf::read.surf(base::unz(file, filename)))))
+    print(paste(filename, "was read in", round(sys.t[3],2), "seconds."))
+    }
+#  data <- lapply(filenames, function(filename) surf::read.surf(base::unz(file, filename)))
   data <- imager::imlist(data)
 
   return(data)
