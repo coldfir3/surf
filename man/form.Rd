@@ -6,30 +6,16 @@
 \alias{form.imlist}
 \title{Title}
 \usage{
-<<<<<<< HEAD
 form(surf, form = "paraboloid")
 
 \method{form}{cimg}(surf, form = "paraboloid")
 
 \method{form}{imlist}(surf, form = "paraboloid")
-=======
-form(surf, form = "paraboloid", formula = NULL)
-
-\method{form}{cimg}(surf, form = "paraboloid", formula = NULL)
-
-\method{form}{imlist}(surf, form = "paraboloid", formula = NULL)
->>>>>>> e7f0212ba28c40bf218f147c65f66099e2e870a5
 }
 \arguments{
 \item{surf}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.}
 
-<<<<<<< HEAD
 \item{form}{an optional parameter that overides the information given on formula. Options are: "eliptical", "paraboloid". #enable partial match}
-=======
-\item{form}{an optional parameter that overides the information given on formula. Options are: "eliptical", "paraboloid".}
->>>>>>> e7f0212ba28c40bf218f147c65f66099e2e870a5
-
-\item{formula}{an optional object of class formula to pass to the lm function.}
 }
 \value{
 a corrected \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
@@ -42,7 +28,6 @@ file <- system.file("extdata", "form.txt", package = "surf")
 surf <- read.surf(file)
 par(mfrow = c(1,2))
 plot(surf, asp = 1)
-<<<<<<< HEAD
 plot(form(surf, form = 'paraboloid'), asp = 1)
 
 plot(surf, asp = 1)
@@ -51,9 +36,5 @@ plot(form(surf, value ~ stats::poly(x, 2) + stats::poly(y, 2)), asp = 1)
 file <- system.file("extdata", "form.zip", package = "surf")
 surf <- read.zip(file)
 plot(imager::imlist(c(surf,form(surf))), asp = 1)
-=======
-plot(form(surf), asp = 1)
-
->>>>>>> e7f0212ba28c40bf218f147c65f66099e2e870a5
 }
 
