@@ -9,13 +9,16 @@ read.zip(file, res = NULL)
 \arguments{
 \item{file}{A string withe the name of the '.txt' file to be loaded.}
 
-\item{res}{Resolution for the input data, if \code{NULL} the algorithm will guess its value}
+\item{res}{Resolution for the input data, if \code{NULL}, and the file is not
+a matrix, the algorithm will set is as the square root of the number of
+points (it will consider the data as square).}
 }
 \value{
 a \code{\link[imager]{imlist}} object.
 }
 \description{
-This function reads a standard '.txt' file and converts it into a list of \code{cimg} objects
+This function reads a standard '.txt' file and converts it into a list of
+\code{cimg} objects
 }
 \examples{
 file <- system.file("extdata", "ground.zip", package = "surf")

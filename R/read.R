@@ -1,10 +1,13 @@
-#' Reads standard surface '.txt' file
+#' Reads a surface '.txt' file
 #'
-#' This function reads a standard '.txt' file and converts it into a \code{cimg} object
+#' This function reads a standard '.txt' file and converts it into a \code{cimg}
+#' object
 #'
 #' @export
 #' @param file A string withe the name of the '.txt' file to be loaded.
-#' @param res Resolution for the input data, if \code{NULL} the algorithm will guess its value
+#' @param res Resolution for the input data, if \code{NULL}, and the file is not
+#'   a matrix, the algorithm will set is as the square root of the number of
+#'   points (it will consider the data as square).
 #' @return a \code{\link[imager]{cimg}} object.
 #'
 #' @examples
@@ -15,7 +18,7 @@
 read.surf <- function(file, res = NULL){
 
   data <- as.matrix(utils::read.table(file))
-  na <- suppressWarnings(storage.mode(data) <- "numeric") # ask on stack exchange how to fix this shit!
+  na <- suppressWarnings(storage.mode(data) <- "numeric")
   data <- unname(data)
   data <- zoo::na.approx(data)
   data[which(is.na(data))] <- 0
@@ -26,11 +29,14 @@ read.surf <- function(file, res = NULL){
 
 #' Reads all surface '.txt' files inside a ".zip" file
 #'
-#' This function reads a standard '.txt' file and converts it into a list of \code{cimg} objects
+#' This function reads a standard '.txt' file and converts it into a list of
+#' \code{cimg} objects
 #'
 #' @export
 #' @param file A string withe the name of the '.txt' file to be loaded.
-#' @param res Resolution for the input data, if \code{NULL} the algorithm will guess its value
+#' @param res Resolution for the input data, if \code{NULL}, and the file is not
+#'   a matrix, the algorithm will set is as the square root of the number of
+#'   points (it will consider the data as square).
 #' @return a \code{\link[imager]{imlist}} object.
 #'
 #' @examples
@@ -40,15 +46,12 @@ read.surf <- function(file, res = NULL){
 #' lapply(surf, plot, asp = 1)
 read.zip <- function(file, res = NULL){
 
-  if(is.null(res)) # arrumar detecao automatica
-
   filenames <- utils::unzip(file, list = TRUE)$Name
   data <- list()
   for (filename in filenames){
     sys.t <- system.time(data <- append(data, list(surf::read.surf(base::unz(file, filename)))))
     print(paste(filename, "was read in", round(sys.t[3],2), "seconds."))
     }
-#  data <- lapply(filenames, function(filename) surf::read.surf(base::unz(file, filename)))
   data <- imager::imlist(data)
 
   return(data)

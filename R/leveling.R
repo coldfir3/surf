@@ -1,11 +1,14 @@
 #' Title
 #'
-#' description
+#' Level the surface by assigning the horizontal reference based on a tilted
+#' plane regression
 #'
 #' @export
-#' @param surf a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
+#' @param surf a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}}
+#'   object.
 #' @param method one of two options: \code{'rot'} or \code{'sub'}.
-#' @return a corrected \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
+#' @return a corrected \code{\link[imager]{cimg}} or a
+#'   \code{\link[imager]{imlist}} object.
 #' @examples
 #' file <- system.file("extdata", "ground.txt", package = "surf")
 #' surf <- read.surf(file)

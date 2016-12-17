@@ -4,7 +4,7 @@
 \alias{form}
 \alias{form.cimg}
 \alias{form.imlist}
-\title{Title}
+\title{Form removal}
 \usage{
 form(surf, form = "paraboloid")
 
@@ -13,15 +13,18 @@ form(surf, form = "paraboloid")
 \method{form}{imlist}(surf, form = "paraboloid")
 }
 \arguments{
-\item{surf}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.}
+\item{surf}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}}
+object.}
 
-\item{form}{an optional parameter that overides the information given on formula. Options are: "ellipsoid", "paraboloid". #enable partial match}
+\item{form}{an optional parameter that overides the information given on
+formula. Options are: "ellipsoid", "paraboloid". #enable partial match}
 }
 \value{
-a corrected \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
+a corrected \code{\link[imager]{cimg}} or a
+  \code{\link[imager]{imlist}} object.
 }
 \description{
-description
+Removes the underlying format of a surface.
 }
 \examples{
 file <- system.file("extdata", "form.txt", package = "surf")

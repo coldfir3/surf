@@ -34,7 +34,7 @@ A S4 class object for the Abbott-Firestone data
 
 \item \code{show}: Custom show for \code{abbott} objects
 
-\item \code{plot}: Custom show for \code{abbott} objects
+\item \code{plot}: Custom plot for \code{abbott} objects
 }}
 \section{Slots}{
 

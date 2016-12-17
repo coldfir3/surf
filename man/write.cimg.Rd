@@ -7,12 +7,14 @@
 write.cimg(x, file = "data")
 }
 \arguments{
-\item{x}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.}
+\item{x}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}}
+object.}
 
 \item{file}{A string withe the name of the file to be writen}
 }
 \description{
-This function reads a standard '.txt' file and converts it into a \code{cimg} object
+This function reads a standard '.txt' file and converts it into a \code{cimg}
+object
 }
 \examples{
 file <- system.file("extdata", "ground.txt", package = "surf")

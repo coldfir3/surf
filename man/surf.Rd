@@ -6,6 +6,6 @@
 \alias{surf-package}
 \title{surf: Surface and topological analysis for tribology}
 \description{
-Description of the package
+Modular surface analysis & metrology software
 }
 

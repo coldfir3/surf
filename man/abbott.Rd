@@ -13,7 +13,7 @@ abbott(surf)
 A S4 object of class \code{\link{abbott-class}}
 }
 \description{
-Description
+This function creates an \code{abbott} object based on a surface
 }
 \examples{
 file <- system.file("extdata", "ground.txt", package = "surf")

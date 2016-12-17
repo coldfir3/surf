@@ -17,14 +17,14 @@ setClass("abbott", representation(
   Sq = "numeric",
   Sv = "numeric",
   Sp = "numeric",
-  St = "numeric",
+  Sz = "numeric",
   Ssk = "numeric",
   Sku = "numeric")
 )
 
 #' Abbott-Firestone data constructor
 #'
-#' Description
+#' This function creates an \code{abbott} object based on a surface
 #'
 #' @param surf a \code{cimg} object
 #' @return A S4 object of class \code{\link{abbott-class}}
@@ -48,6 +48,7 @@ abbott <- function(surf){
   model@Sq <- sqrt(mean(surf^2))
   model@Sv <- min(surf)
   model@Sp <- max(surf)
+  model@Sz <- model@Sv - model@Sp
 
   return(model)
 }
@@ -62,7 +63,7 @@ setMethod("print", signature = "abbott", definition = function(x) base::print(x@
 #' @export
 setMethod("show", signature = "abbott", definition = function(object) base::print(object@Sa))
 
-#' @describeIn abbott Custom show for \code{abbott} objects
+#' @describeIn abbott Custom plot for \code{abbott} objects
 #' @param ynew Optional probability points where to calculate heights.
 #' @param y unnused argument of \code{plot} generic function.
 #' @param ... Optional arguments to be passed to \code{plot} function

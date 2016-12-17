@@ -2,20 +2,23 @@
 % Please edit documentation in R/read.R
 \name{read.surf}
 \alias{read.surf}
-\title{Reads standard surface '.txt' file}
+\title{Reads a surface '.txt' file}
 \usage{
 read.surf(file, res = NULL)
 }
 \arguments{
 \item{file}{A string withe the name of the '.txt' file to be loaded.}
 
-\item{res}{Resolution for the input data, if \code{NULL} the algorithm will guess its value}
+\item{res}{Resolution for the input data, if \code{NULL}, and the file is not
+a matrix, the algorithm will set is as the square root of the number of
+points (it will consider the data as square).}
 }
 \value{
 a \code{\link[imager]{cimg}} object.
 }
 \description{
-This function reads a standard '.txt' file and converts it into a \code{cimg} object
+This function reads a standard '.txt' file and converts it into a \code{cimg}
+object
 }
 \examples{
 file <- system.file("extdata", "ground.txt", package = "surf")

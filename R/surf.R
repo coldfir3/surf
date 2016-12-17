@@ -1,9 +1,9 @@
 #' surf: Surface and topological analysis for tribology
 #'
-#' Description of the package
+#' Modular surface analysis & metrology software
 #'
 #' @docType package
 #' @name surf
 NULL
 
-library(imager)
+#library(imager)

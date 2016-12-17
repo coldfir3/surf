@@ -1,11 +1,14 @@
-#' Title
+#' Form removal
 #'
-#' description
+#' Removes the underlying format of a surface.
 #'
 #' @export
-#' @param surf a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
-#' @param form an optional parameter that overides the information given on formula. Options are: "ellipsoid", "paraboloid". #enable partial match
-#' @return a corrected \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
+#' @param surf a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}}
+#'   object.
+#' @param form an optional parameter that overides the information given on
+#'   formula. Options are: "ellipsoid", "paraboloid". #enable partial match
+#' @return a corrected \code{\link[imager]{cimg}} or a
+#'   \code{\link[imager]{imlist}} object.
 #' @examples
 #' file <- system.file("extdata", "form.txt", package = "surf")
 #' surf <- read.surf(file)
@@ -48,7 +51,6 @@ form.cimg <- function(surf, form = 'paraboloid'){
 #' @rdname form
 #' @method form imlist
 #' @export
-
 form.imlist <- function(surf, form = 'paraboloid'){
   surf <- lapply(surf, form.cimg, form)
   surf <- imager::imlist(surf)

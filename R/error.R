@@ -1,8 +1,11 @@
-#' difference between two \code{cimg} objects
+#' Error between two \code{cimg} objects
+#'
+#' This function calculates de difference between two surfaces.
 #'
 #' @export
 #' @param surf1 \code{cimg} object
 #' @param surf2 \code{cimg} object
+#' @return a surface of the error between two surfaces.
 #'
 #' @examples
 #' file <- system.file("extdata", "sur1.txt", package = "surf")

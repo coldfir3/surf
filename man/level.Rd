@@ -13,15 +13,18 @@ level(surf, method = "rot")
 \method{level}{imlist}(surf, method = "rot")
 }
 \arguments{
-\item{surf}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.}
+\item{surf}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}}
+object.}
 
 \item{method}{one of two options: \code{'rot'} or \code{'sub'}.}
 }
 \value{
-a corrected \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
+a corrected \code{\link[imager]{cimg}} or a
+  \code{\link[imager]{imlist}} object.
 }
 \description{
-description
+Level the surface by assigning the horizontal reference based on a tilted
+plane regression
 }
 \examples{
 file <- system.file("extdata", "ground.txt", package = "surf")

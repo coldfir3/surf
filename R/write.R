@@ -1,9 +1,11 @@
 #' Write standard surface '.txt' file
 #'
-#' This function reads a standard '.txt' file and converts it into a \code{cimg} object
+#' This function reads a standard '.txt' file and converts it into a \code{cimg}
+#' object
 #'
 #' @export
-#' @param x a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
+#' @param x a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}}
+#'   object.
 #' @param file A string withe the name of the file to be writen
 #'
 #' @examples
@@ -20,10 +22,12 @@ write.cimg <- function(x, file = "data"){
 
 #' Write a list of standard surface '.txt' file
 #'
-#' This function reads a standard '.txt' file and converts it into a \code{cimg} object
+#' This function reads a standard '.txt' file and converts it into a \code{cimg}
+#' object
 #'
 #' @export
-#' @param x a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}} object.
+#' @param x a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}}
+#'   object.
 #' @param file A string withe the name of the file to be writen
 #'
 #' @examples
