@@ -4,7 +4,7 @@
 \alias{level}
 \alias{level.cimg}
 \alias{level.imlist}
-\title{Title}
+\title{Level a surface}
 \usage{
 level(surf, method = "rot")
 

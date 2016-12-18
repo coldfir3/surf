@@ -4,12 +4,14 @@
 \alias{relocate}
 \title{Relocation of a surface}
 \usage{
-relocate(surf, targ)
+relocate(surf, targ, control = NULL)
 }
 \arguments{
 \item{surf}{\code{cimg} object}
 
 \item{targ}{\code{cimg} object}
+
+\item{control}{for the optimization algorithm}
 }
 \value{
 a relocated \code{cimg} object
@@ -18,16 +20,12 @@ a relocated \code{cimg} object
 This function relocates a surface to match some reference sample.
 }
 \examples{
-file <- system.file("extdata", "sur1.txt", package = "surf")
-sur1 <- read.surf(file)
-file <- system.file("extdata", "sur2.txt", package = "surf")
-sur2 <- read.surf(file)
-sur3 <- relocate(sur2, sur1)
+r_ground2 <- relocate(ground2, ground1, control = list(max.time = 4))
 par(mfrow = c(2,2), mar = c(2,2,1,1))
-plot(sur1, asp = 1)
-plot(sur2, asp = 1)
-plot(sur3, asp = 1)
-plot(error(sur1, sur3), asp = 1)
-mean(error(sur1, sur3))
+plot(ground1, asp = 1)
+plot(ground2, asp = 1)
+plot(r_ground2, asp = 1)
+plot(error(ground1, r_ground2), asp = 1)
+mean(error(ground1, r_ground2))
 }
 

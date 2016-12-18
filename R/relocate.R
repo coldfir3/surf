@@ -5,38 +5,29 @@
 #' @export
 #' @param surf \code{cimg} object
 #' @param targ \code{cimg} object
+#' @param control for the optimization algorithm
 #' @return a relocated \code{cimg} object
 #' @examples
-#' file <- system.file("extdata", "sur1.txt", package = "surf")
-#' sur1 <- read.surf(file)
-#' file <- system.file("extdata", "sur2.txt", package = "surf")
-#' sur2 <- read.surf(file)
-#' sur3 <- relocate(sur2, sur1)
+#' r_ground2 <- relocate(ground2, ground1, control = list(max.time = 4))
 #' par(mfrow = c(2,2), mar = c(2,2,1,1))
-#' plot(sur1, asp = 1)
-#' plot(sur2, asp = 1)
-#' plot(sur3, asp = 1)
-#' plot(error(sur1, sur3), asp = 1)
-#' mean(error(sur1, sur3))
-relocate <- function(surf, targ){
-
-  lim <- c(25,dim(surf)[1]*0.1,dim(surf)[2]*0.1)
+#' plot(ground1, asp = 1)
+#' plot(ground2, asp = 1)
+#' plot(r_ground2, asp = 1)
+#' plot(error(ground1, r_ground2), asp = 1)
+#' mean(error(ground1, r_ground2))
+relocate <- function(surf, targ, control = NULL){
 
   fn <- function(par, surf, targ, return_surface = FALSE){
 
-    surf[1:50,] <- 0
-    surf[,1:50] <- 0
-    surf[256:207,] <- 0
-    surf[,256:207] <- 0
+#    if(!return_surface){
+#      surf[1:50,] <- 0
+#      surf[,1:50] <- 0
+#      surf[256:207,] <- 0
+#      surf[,256:207] <- 0
+#    }
 
-    ang <- par[1]
-    u <- par[2]
-    v <- par[3]
 
-    surf <- imager::imrotate(surf, ang)
-    surf <- imager::imshift(surf, u, v)
-    if(any(dim(targ) != dim(surf)))
-      surf <- imager::crop.borders(surf, (dim(surf)[1] - dim(targ)[1])/2, (dim(surf)[2] - dim(targ)[2])/2)
+    surf <- transform(surf, par[1], par[2], par[3])
 
     S <- mean(error(surf, targ))
     if (return_surface)
@@ -45,13 +36,34 @@ relocate <- function(surf, targ){
       return(S)
   }
 
-  res <- rgenoud::genoud(fn = fn, nvars = 3, Domains = cbind(-lim,lim),
-                         pop.size=150, max.generations=15, BFGSburnin=10, BFGS = FALSE,
-                         gradient.check=FALSE, boundary.enforcement = 2, print.level = 1,
-                         surf = surf, targ = targ, solution.tolerance = 1e-3)
+#  res <- rgenoud::genoud(fn = fn, nvars = 3, Domains = cbind(-lim,lim),
+#                         pop.size=50, max.generations=10, BFGSburnin=7, BFGS = FALSE,
+#                         gradient.check=FALSE, boundary.enforcement = 2, print.level = 1,
+#                         surf = surf, targ = targ, solution.tolerance = 1e-3)
 
-  res2 <- GenSA::GenSA(par = res$par, fn = fn, lower = - lim, upper = lim, control = list(max.time = 2),
-                       surf, targ, return_surface = FALSE)
+  if (is.null(control$max.time))
+    control$max.time = 60
+  if (is.null(control$verbose))
+    control$verbose = TRUE
+#  if (is.null(control$maxit))
+#    control$maxit = 30
+  if (is.null(control$smooth))
+    control$smooth = FALSE
+  if (is.null(control$threshold.stop))
+    control$threshold.stop = 0
+  if (is.null(control$lower))
+    lower <- -0.1 * c(180, dim(surf)[1], dim(surf)[2])
+  else
+    lower <- control$lower
+  if (is.null(control$upper))
+    upper <- 0.1 * c(180, dim(surf)[1], dim(surf)[2])
+  else
+    upper <- control$upper
+
+  control$lower <- control$upper <- NULL
+
+  res <- GenSA::GenSA(par = NULL, fn = fn, lower = lower, upper = upper,
+                      control = control, surf, targ)
 
   surf <- fn(res$par, surf, targ, TRUE)
 

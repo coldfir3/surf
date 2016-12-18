@@ -1,4 +1,4 @@
-#' Title
+#' Level a surface
 #'
 #' Level the surface by assigning the horizontal reference based on a tilted
 #' plane regression
