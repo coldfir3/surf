@@ -6,8 +6,4 @@
 #' @name surf
 NULL
 
-#' @imports methods
-NULL
-
-#' @imports imager
-NULL
+library(imager)

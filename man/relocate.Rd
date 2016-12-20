@@ -20,7 +20,9 @@ a relocated \code{cimg} object
 This function relocates a surface to match some reference sample.
 }
 \examples{
-r_ground2 <- relocate(ground2, ground1, control = list(max.time = 4))
+system.time(r_ground2 <- relocate(ground2, ground1,
+  control = list(max.generations = 5, pop.size = 50, BFGS = FALSE)))
+  # for better results, increas population size, max.generations, and enable BFGS
 par(mfrow = c(2,2), mar = c(2,2,1,1))
 plot(ground1, asp = 1)
 plot(ground2, asp = 1)

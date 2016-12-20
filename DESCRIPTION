@@ -13,5 +13,4 @@ RoxygenNote: 5.0.1
 Imports: imager,
     zoo,
     methods,
-    rgenoud,
-    GenSA
+    rgenoud
