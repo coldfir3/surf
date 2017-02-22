@@ -6,29 +6,30 @@
 #' @export
 mean.imlist <- function(x, ...){
 
-  dim <- dim(x[[1]])
+  res <- 0
+  for (s in x)
+    res <- res + s
+  res <- res/length(x)
 
-  data <- lapply(x, as.vector)
-  data <- do.call(rbind, data)
-  data <- apply(data, 2, mean)
-
-  return(imager::as.cimg(data, x = dim[1], y = dim[2], z = dim[3], cc = dim[4]))
+  return(res)
 }
 
 #' Custom sd for \code{imlist} objects
 #'
-#' @param x \code{imlist} object
+#' @param surf \code{imlist} object
 #' @return standard deviation surface of all surfaces inside \code{imlist} object
 #' @export
-sd.imlist <- function(x){ #promote to generic
+sd.imlist <- function(surf){ #promote to generic
 
-  dim <- dim(x[[1]])
+  mu <- mean(surf)
 
-  data <- lapply(x, as.vector)
-  data <- do.call(rbind, data)
-  data <- apply(data, 2, stats::sd)
+  res <- 0
+  for (s in surf)
+    res <- (s - mu)^2
+  res <- res/(length(surf) - 1)
+  res <- res^0.5
 
-  return(imager::as.cimg(data, x = dim[1], y = dim[2], z = dim[3], cc = dim[4]))
+    return(res)
 }
 
 #' transforms \code{imlist} objects into observation dataframes

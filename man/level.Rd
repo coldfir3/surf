@@ -8,7 +8,7 @@
 \usage{
 level(surf, method = "rot")
 
-\method{level}{cimg}(surf, method = "sub")
+\method{level}{cimg}(surf, method = "rot")
 
 \method{level}{imlist}(surf, method = "rot")
 }

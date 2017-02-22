@@ -4,7 +4,7 @@
 \alias{read.zip}
 \title{Reads all surface '.txt' files inside a ".zip" file}
 \usage{
-read.zip(file, res = NULL)
+read.zip(file, res = NULL, file.n = NULL)
 }
 \arguments{
 \item{file}{A string withe the name of the '.txt' file to be loaded.}
@@ -12,6 +12,8 @@ read.zip(file, res = NULL)
 \item{res}{Resolution for the input data, if \code{NULL}, and the file is not
 a matrix, the algorithm will set is as the square root of the number of
 points (it will consider the data as square).}
+
+\item{file.n}{the number(s) of file(s) to be read, default is NULL which read all files}
 }
 \value{
 a \code{\link[imager]{imlist}} object.

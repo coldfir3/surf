@@ -4,10 +4,10 @@
 \alias{sd.imlist}
 \title{Custom sd for \code{imlist} objects}
 \usage{
-sd.imlist(x)
+sd.imlist(surf)
 }
 \arguments{
-\item{x}{\code{imlist} object}
+\item{surf}{\code{imlist} object}
 }
 \value{
 standard deviation surface of all surfaces inside \code{imlist} object

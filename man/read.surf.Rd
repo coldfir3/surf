@@ -4,14 +4,12 @@
 \alias{read.surf}
 \title{Reads a surface '.txt' file}
 \usage{
-read.surf(file, res = NULL)
+read.surf(file, cutoff = c(0.001, 0.999))
 }
 \arguments{
 \item{file}{A string withe the name of the '.txt' file to be loaded.}
 
-\item{res}{Resolution for the input data, if \code{NULL}, and the file is not
-a matrix, the algorithm will set is as the square root of the number of
-points (it will consider the data as square).}
+\item{cutoff}{cutoff}
 }
 \value{
 a \code{\link[imager]{cimg}} object.
@@ -23,7 +21,6 @@ object
 \examples{
 file <- system.file("extdata", "ground.txt", package = "surf")
 surf <- read.surf(file)
-par(mfrow = c(2,2))
 plot(surf, asp = 1)
 }
 
