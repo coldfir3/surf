@@ -6,21 +6,22 @@
 #' @export
 #' @param file A string withe the name of the '.txt' file to be loaded.
 #' @param cutoff cutoff
+#' @param na.rm interpolation algorithm
 #' @return a \code{\link[imager]{cimg}} object.
 #'
 #' @examples
 #' file <- system.file("extdata", "ground.txt", package = "surf")
 #' surf <- read.surf(file)
-#' plot(surf, asp = 1)
-read.surf <- function(file, cutoff = c(0.001,0.999)){
+#' plot(surf)
+read.surf <- function(file, cutoff = c(0.001,0.999), na.rm = TRUE){
 
   data <- as.matrix(utils::read.table(file))
   na <- suppressWarnings(storage.mode(data) <- "numeric")
   data <- unname(data)
-  data[data < stats::quantile(data, cutoff[1], na.rm = TRUE)] <- NA
-  data[data > stats::quantile(data, cutoff[2], na.rm = TRUE)] <- NA
+  data <- rm.outliers(data, cutoff[1], cutoff[2])
   im <- imager::as.cimg(data)
-  im <- interp(im)
+  if(na.rm)
+    im <- try(interp(im))
 
   return(im)
 }
@@ -32,10 +33,7 @@ read.surf <- function(file, cutoff = c(0.001,0.999)){
 #' \code{cimg} objects
 #'
 #' @export
-#' @param file A string withe the name of the '.txt' file to be loaded.
-#' @param res Resolution for the input data, if \code{NULL}, and the file is not
-#'   a matrix, the algorithm will set is as the square root of the number of
-#'   points (it will consider the data as square).
+#' @inheritParams read.surf
 #' @param file.n the number(s) of file(s) to be read, default is NULL which read all files
 #' @return a \code{\link[imager]{imlist}} object.
 #'
@@ -43,8 +41,8 @@ read.surf <- function(file, cutoff = c(0.001,0.999)){
 #' file <- system.file("extdata", "ground.zip", package = "surf")
 #' surf <- read.zip(file)
 #' par(mfrow = c(1,2))
-#' lapply(surf, plot, asp = 1)
-read.zip <- function(file, res = NULL, file.n = NULL){
+#' plot(surf, layout = "row")
+read.zip <- function(file, file.n = NULL, cutoff = c(0.001,0.999), na.rm = TRUE){
 
   if (is.null(file.n))
     filenames <- utils::unzip(file, list = TRUE)$Name
@@ -52,10 +50,11 @@ read.zip <- function(file, res = NULL, file.n = NULL){
     filenames <- utils::unzip(file, list = TRUE)$Name[file.n]
   data <- list()
   for (filename in filenames){
-    sys.t <- system.time(data <- append(data, list(surf::read.surf(base::unz(file, filename)))))
+    sys.t <- system.time(data <- append(data, list(
+      surf::read.surf(base::unz(file, filename), cutoff, na.rm))))
     print(paste(filename, "was read in", round(sys.t[3],2), "seconds."))
     }
-  data <- imager::imlist(data)
+  data <- imager::as.imlist(data[!is.na(data)])
 
   return(data)
 }

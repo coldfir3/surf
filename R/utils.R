@@ -20,7 +20,7 @@
     for (i in 1:length(surf2))
       surf[[i]] <- surf1 + surf2[[i]]
 
-  surf <- imager::imlist(surf)
+  surf <- imager::as.imlist(surf)
   return(surf)
 }
 
@@ -46,7 +46,7 @@
     for (i in 1:length(surf2))
       surf[[i]] <- surf1 - surf2[[i]]
 
-  surf <- imager::imlist(surf)
+  surf <- imager::as.imlist(surf)
   return(surf)
 }
 
@@ -72,7 +72,7 @@
     for (i in 1:length(surf2))
       surf[[i]] <- surf1 * surf2[[i]]
 
-  surf <- imager::imlist(surf)
+  surf <- imager::as.imlist(surf)
   return(surf)
 }
 
@@ -98,7 +98,7 @@
     for (i in 1:length(surf2))
       surf[[i]] <- surf1 / surf2[[i]]
 
-  surf <- imager::imlist(surf)
+  surf <- imager::as.imlist(surf)
   return(surf)
 }
 
@@ -124,6 +124,6 @@
     for (i in 1:length(surf2))
       surf[[i]] <- surf1 ^ surf2[[i]]
 
-  surf <- imager::imlist(surf)
+  surf <- imager::as.imlist(surf)
   return(surf)
 }

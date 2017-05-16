@@ -27,15 +27,14 @@ a corrected \code{\link[imager]{cimg}} or a
 Removes the underlying format of a surface.
 }
 \examples{
-file <- system.file("extdata", "form.txt", package = "surf")
-surf <- read.surf(file)
-par(mfrow = c(1,3))
-plot(surf, asp = 1)
-plot(form(surf, form = 'paraboloid'), asp = 1)
-plot(form(surf, form = 'ellipsoid'), asp = 1)
+surf <- ground[[1]]
+par(mfrow = c(2,3))
+plot(surf)
+plot(form(surf))
+plot(surf - form(surf))
 
-file <- system.file("extdata", "form.zip", package = "surf")
-surf <- read.zip(file)
-plot(form(surf, form = 'paraboloid'))
+plot(surf)
+plot(form(surf, value ~ x + y))
+plot(surf - form(surf, value ~ x + y))
+
 }
-

@@ -10,16 +10,16 @@
 #' @return a corrected \code{\link[imager]{cimg}} or a
 #'   \code{\link[imager]{imlist}} object.
 #' @examples
-#' file <- system.file("extdata", "form.txt", package = "surf")
-#' surf <- read.surf(file)
-#' par(mfrow = c(1,3))
-#' plot(surf, asp = 1)
-#' plot(form(surf, form = 'paraboloid'), asp = 1)
-#' plot(form(surf, form = 'ellipsoid'), asp = 1)
+#' surf <- ground[[1]]
+#' par(mfrow = c(2,3))
+#' plot(surf)
+#' plot(form(surf))
+#' plot(surf - form(surf))
 #'
-#' file <- system.file("extdata", "form.zip", package = "surf")
-#' surf <- read.zip(file)
-#' plot(form(surf, form = 'paraboloid'))
+#' plot(surf)
+#' plot(form(surf, value ~ x + y))
+#' plot(surf - form(surf, value ~ x + y))
+#'
 form <- function(surf, form = 'paraboloid'){
   UseMethod("form", surf)
 }
@@ -33,12 +33,12 @@ form.cimg <- function(surf, form = 'paraboloid'){
 
   if (form == 'paraboloid')
     model <- stats::lm(value ~ stats::poly(x, 2) + stats::poly(y, 2), data = df)
-  else if (form == 'ellipsoid')
+#  else if (form == 'ellipsoid')
 #    model <- stats::nls(1 ~ A*x^2 + B*y^2 + C*value^2 + D*x*y + E*x*value + F*y*value + G*x + H*y + I*value,
 #                        data = df,
 #                        start=list(A = 0, B = 0, C = 0, D = 0, E = 0, F = 0, G = 0, H = 0, I = 1))
-    model <- stats::nls(value ~ ((x-x0)^2/a^2 + (y-y0)^2/b^2)^0.5 + c, data = df,
-                        start=list(a = 1, b = 1, x0 = 0, y0 = 0, c = mean(surf)))
+#    model <- stats::nls(value ~ ((x-x0)^2/a^2 + (y-y0)^2/b^2)^0.5 + c, data = df,
+#                        start=list(a = 1, b = 1, x0 = 0, y0 = 0, c = mean(surf)))
   else if (class(form) == "formula")
     model <- stats::lm(form, data = df)
   else

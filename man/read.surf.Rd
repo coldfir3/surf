@@ -4,12 +4,14 @@
 \alias{read.surf}
 \title{Reads a surface '.txt' file}
 \usage{
-read.surf(file, cutoff = c(0.001, 0.999))
+read.surf(file, cutoff = c(0.001, 0.999), na.rm = TRUE)
 }
 \arguments{
 \item{file}{A string withe the name of the '.txt' file to be loaded.}
 
 \item{cutoff}{cutoff}
+
+\item{na.rm}{interpolation algorithm}
 }
 \value{
 a \code{\link[imager]{cimg}} object.
@@ -21,6 +23,5 @@ object
 \examples{
 file <- system.file("extdata", "ground.txt", package = "surf")
 surf <- read.surf(file)
-plot(surf, asp = 1)
+plot(surf)
 }
-

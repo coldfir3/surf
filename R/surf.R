@@ -2,8 +2,11 @@
 #'
 #' Modular surface analysis & metrology software
 #'
+#' @import imager
+#'
 #' @docType package
 #' @name surf
 NULL
 
-library(imager)
+#library(imager)
+# devtools::use_package("imager")

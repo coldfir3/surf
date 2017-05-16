@@ -8,9 +8,9 @@
 \usage{
 level(surf, method = "rot")
 
-\method{level}{cimg}(surf, method = "rot")
+\method{level}{cimg}(surf, method = "sub")
 
-\method{level}{imlist}(surf, method = "rot")
+\method{level}{imlist}(surf, method = "sub")
 }
 \arguments{
 \item{surf}{a \code{\link[imager]{cimg}} or a \code{\link[imager]{imlist}}
@@ -27,16 +27,13 @@ Level the surface by assigning the horizontal reference based on a tilted
 plane regression
 }
 \examples{
-file <- system.file("extdata", "ground.txt", package = "surf")
-surf <- read.surf(file)
+surf <- ground[[1]]
 par(mfrow = c(1,2))
-plot(surf, asp = 1)
-plot(level(surf), asp = 1)
+plot(surf)
+plot(level(surf))
 
 file <- system.file("extdata", "ground.zip", package = "surf")
 surf <- read.zip(file)
-plot(surf, asp = 1)
-plot(level(surf), asp = 1)
-plot(imager::imlist(c(surf,level(surf))), asp = 1)
+plot(surf, layout = "row")
+plot(level(surf), layout = "row")
 }
-

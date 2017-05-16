@@ -1,0 +1,47 @@
+#' Relocation of a surface
+#'
+#' This function relocates a surface to match some reference sample.
+#'
+#' @export
+#' @param surf \code{cimg} object
+#' @param targ \code{cimg} object
+#' @param control for the optimization algorithm
+#' @return a relocated \code{cimg} object
+#' @examples
+#' targ = ground1
+#' surf = shift(ground1,1,0)
+#' system.time(r_ground2 <- relocate(ground2, ground1,
+#'   control = list(max.generations = 5, pop.size = 50, BFGS = FALSE)))
+#'   # for better results, increas population size, max.generations, and enable BFGS
+#' par(mfrow = c(2,2), mar = c(2,2,1,1))
+#' plot(ground1, asp = 1)
+#' plot(ground2, asp = 1)
+#' plot(r_ground2, asp = 1)
+#' plot(error(ground1, r_ground2), asp = 1)
+#' mean(error(ground1, r_ground2))
+relocate2 <- function(surf, targ, control = NULL){
+
+  imager::interp(surf, data.frame(x = c(128,128.5,129), y = c(128,128.5,129)))
+
+  r = 10
+  sig = 3
+  x0 = 128
+  y0 = 128
+  stencil <- subset(expand.grid(dx=seq(-r,r,1),dy=seq(-r,r,1)), dx^2 + dy^2 < r^2)
+  weights <- dnorm(sqrt(stencil$dx^2 + stencil$dy^2),0,sig)/dnorm(0,0,sig)
+
+  plot(targ)
+  imager::highlight(pxset)
+
+  fn <- function(par, surf, targ){
+    surf <- shift(surf, par[1], par[2])
+    error <- mean(abs(surf - targ))
+    return(error)
+  }
+
+  opt <- optim(c(0,0), fn, method = "L-BFGS-B", lower = c(-2,-2), upper = c(2,2), surf = surf, targ = targ)
+
+  surf <- shift(surf, opt$par[1], opt$par[2])
+
+  return(surf)
+}

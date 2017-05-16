@@ -1,4 +1,4 @@
-
+#### this is flagged for revision: change name to 'patch'
 #' Fill the gaps using nearest neighbors
 #'
 #' This function fill the NA values of a cimg object by averaging neighbors
@@ -14,7 +14,7 @@ interp <- function (im, cubic = FALSE, extrapolate = FALSE, npass = 3){
   if (extrapolate)
     stop('extrapolation not yet implemented')
   if (cubic)
-    stencil <- expand.grid(dx=seq(-2,2,1),dy=seq(-2,2,1))
+    stop('cubic interpolation not yet implemented')
   else
     stencil <- expand.grid(dx=seq(-1,1,1),dy=seq(-1,1,1))
 
@@ -24,7 +24,8 @@ interp <- function (im, cubic = FALSE, extrapolate = FALSE, npass = 3){
   for (i in 1:npass){
     nas <- as.array(which(is.na(im), arr.ind = TRUE))
     if (!prod(dim(nas))) break
-    nas <- nas[which(nas[,1] != 1 & nas[,1] != w & nas[,2] != 1 & nas[,2] != h),]
+    #nas <- nas[which(nas[,1] != 1 & nas[,1] != w & nas[,2] != 1 & nas[,2] != h),]
+    nas <- subset(nas, nas[,1] != 1 & nas[,1] != w & nas[,2] != 1 & nas[,2] != h)
     if (!prod(dim(nas))) break
 
     im[nas] <- apply(nas, 1, function(loc)

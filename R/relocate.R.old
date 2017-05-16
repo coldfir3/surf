@@ -1,0 +1,81 @@
+#' Relocation of a surface
+#'
+#' This function relocates a surface to match some reference sample.
+#'
+#' @export
+#' @param surf \code{cimg} object
+#' @param targ \code{cimg} object
+#' @param control for the optimization algorithm
+#' @return a relocated \code{cimg} object
+#' @examples
+#' surf = ground1
+#' targ = shift(ground1,1,0)
+#' system.time(r_ground2 <- relocate(ground2, ground1,
+#'   control = list(max.generations = 5, pop.size = 50, BFGS = FALSE)))
+#'   # for better results, increas population size, max.generations, and enable BFGS
+#' par(mfrow = c(2,2), mar = c(2,2,1,1))
+#' plot(ground1, asp = 1)
+#' plot(ground2, asp = 1)
+#' plot(r_ground2, asp = 1)
+#' plot(error(ground1, r_ground2), asp = 1)
+#' mean(error(ground1, r_ground2))
+relocate <- function(surf, targ, control = NULL){
+
+  if(F){
+  fn <- function(par, surf, targ, return_surface = FALSE){
+
+    surf <- transform(surf, par[1], par[2], par[3])
+
+    if (return_surface)
+      return(surf)
+    else{
+      S <- mean(error(surf, targ))
+      return(S)
+      }
+  }
+
+  if (is.null(control$pop.size))
+    control$pop.size <- 250
+  if (is.null(control$max.generations))
+    control$max.generations <- 30
+  if (is.null(control$wait.generations))
+    control$wait.generations <- 5
+  if (is.null(control$BFGSburnin))
+    control$BFGSburnin <- control$max.generations - 5
+  if (is.null(control$solution.tolerance))
+    control$solution.tolerance <- 1e-3
+  if (is.null(control$BFGS))
+    control$BFGS <- TRUE
+  if (is.null(control$lower))
+    control$lower <- -0.1 * c(180, dim(surf)[1], dim(surf)[2])
+  if (is.null(control$upper))
+    control$upper <- 0.1 * c(180, dim(surf)[1], dim(surf)[2])
+
+  res <- rgenoud::genoud(fn = fn, nvars = 3,
+                         Domains = cbind(control$lower,control$upper),
+                         pop.size = control$pop.size,
+                         max.generations = control$max.generations,
+                         wait.generations = control$wait.generations,
+                         BFGSburnin = control$BFGSburnin,
+                         gradient.check=FALSE,
+                         BFGS = control$BFGS,
+                         boundary.enforcement = 2,
+                         print.level = 1,
+                         solution.tolerance = control$solution.tolerance,
+                         optim.method = "SANN",
+                         surf = surf, targ = targ)
+  surf <- fn(res$par, surf, targ, TRUE)
+  }
+
+  fn <- function(par, surf, targ){
+    surf <- shift(surf, par[1], par[2])
+    error <- mean(abs(surf - targ))
+    return(error)
+  }
+
+  opt <- optim(c(0,0), fn, method = "L-BFGS-B", lower = c(-2,-2), upper = c(2,2), surf = surf, targ = targ)
+
+  surf <- shift(surf, opt$par[1], opt$par[2])
+
+  return(surf)
+}

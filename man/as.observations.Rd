@@ -16,4 +16,3 @@ as.observations(surf)
 Each \code{cimg} object inside \code{surf} is vectorized and alocated in an
 individual line of a resultind data.frame
 }
-

@@ -1,0 +1,53 @@
+#' High resolution image formation based on low resolution frames
+#'
+#' bla bla
+#'
+#' @param LR_frames \code{imlist} object containing the Low Resolution frames
+#'
+#' @export
+#' @examples
+#' lsf <- ground
+formation <- function(LRf){
+
+  uscale = 2
+  labda = 1
+
+  p <- length(LRf)
+  y <- LRf
+  z <- imager::resize(y[[10]], -100*uscale, -100*uscale)
+
+  W <- function(im, par, uscale){
+    im <- transform(im, par[1], par[2], par[3])
+    im <- imager::resize(im, -100/uscale, -100/uscale)
+    return(im)
+  }
+
+  L <- function(z, s){
+    l <- 0
+    Qz <- labda * sum(imager::imlap(z * z))
+    for(i in 1:p){
+      nrm <- sum((y[[i]] - W(z, s[i,], uscale))^2)
+      l <- l + nrm + Qz
+    }
+    return(l)
+  }
+
+  grad.L <- function(z, s){
+    grl <- 0
+    Qz <- labda * (imager::imlap(imager::imlap(z)))
+    for(i in 1:p){
+      nrm <- (W((W(z, s[i,], uscale) - y[[i]]), s[i,], 0.25*uscale))
+      l <- l + nrm + Qz
+    }
+    return(l)
+  }
+
+  z_star <- optim(z, fn = L, gr = grad.L, optim = "CG")
+
+  z_star <- z
+  z_star <- z_star - 0.00001 * grad.L(z_star, s)
+  plot(z_star)
+  range(z_star)
+
+
+}

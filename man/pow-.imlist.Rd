@@ -14,4 +14,3 @@
 \description{
 Custom power of two \code{imlist} objects
 }
-

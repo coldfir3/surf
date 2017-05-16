@@ -14,4 +14,3 @@
 \description{
 Custom sum of two \code{imlist} objects
 }
-

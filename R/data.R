@@ -1,21 +1,7 @@
 #' Object for ground surfaces
 #'
-#' @format A cimg object with 256x256 pixles.
-'ground1'
-
-#' Object for ground surfaces
-#'
-#' This object is the same of ground1 but have being rotated by 5 dg and then displaced 5 pixels to the right and 10 to the up.
-#'
-#' @format A cimg object with 256x256 pixles.
-'ground2'
-
-#' Object for ground surfaces
-#'
-#' This object is the same of ground1 but have being displaced 5 pixels to the right and 10 to the up followed by a rotation of 5 dg.
-#'
-#' @format A cimg object with 256x256 pixles.
-'ground3'
+#' @format A list of cimg objects with 256x256 pixles.
+'ground'
 
 # ground <- read.surf('C:/Dropbox/Adriano/Doutorado/pkg/ground.txt')
 # ground <- resize(ground, size_x=256+100, size_y=256+100)
@@ -27,3 +13,10 @@
 # devtools::use_data(ground1)
 # devtools::use_data(ground2)
 # devtools::use_data(ground3)
+
+# load('C:/Users/CITEC/Documents/UTF.imgs')
+# ground <- UTF_GRO02
+# ground <- read.zip('E:/AZW/UTF/ground2.zip')
+# ground <- lapply(ground, resize, size_x = 256, size_y = 256, interpolation_type = 5)
+# ground <- as.imlist(ground)
+# devtools::use_data(ground)

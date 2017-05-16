@@ -21,4 +21,3 @@ a \code{\link[imager]{cimg}} object.
 \description{
 This function fill the NA values of a cimg object by averaging neighbors
 }
-

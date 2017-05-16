@@ -17,4 +17,3 @@ mean surface of all surfaces inside \code{imlist} object
 \description{
 Custom mean for \code{imlist} objects
 }
-

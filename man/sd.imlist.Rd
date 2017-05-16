@@ -15,4 +15,3 @@ standard deviation surface of all surfaces inside \code{imlist} object
 \description{
 Custom sd for \code{imlist} objects
 }
-

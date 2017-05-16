@@ -2,21 +2,19 @@
 % Please edit documentation in R/transform.R
 \name{transform}
 \alias{transform}
-\title{Rigid body transformation of a surface}
+\title{This function performs a rigid body transformation of a surface file}
 \usage{
-transform(surf, a, u, v, order = "RT")
+transform(surf, u = 0, v = 0, theta = 0, method = "imwarp")
 }
 \arguments{
 \item{surf}{\code{cimg} object}
 
-\item{a}{numerical indicating the angle of rotation (in degrees)}
-
 \item{u, v}{numerical indicating the displacement in the x and y direction (in
 pixels)}
 
-\item{order}{character indicating the order of the transformation: "RT"
-indicates rotate then translate and "TR" indicate translate than rotate.
-Logical 1 or 0 are also accepted for optimization porpuses.}
+\item{theta}{numerical indicating the angle of rotation (in degrees)}
+
+\item{method}{method for interpolation}
 }
 \value{
 a transformed \code{cimg} object
@@ -25,11 +23,12 @@ a transformed \code{cimg} object
 This function performs a rigid body transformation of a surface file
 }
 \examples{
-par(mfrow = c(2,2), mar = c(2,2,1,1))
-plot(ground1, asp = 1)
-plot(transform(ground1, 5, 10, -10), asp = 1)
-plot(transform(transform(ground1, 5, 10, -10), -5, -10, 10, "TR"))
-plot(error(transform(transform(ground1, 5, 10, -10), -5, -10, 10, "TR"), ground1))
-mean(error(transform(transform(ground1, 5, 10, -10), -5, -10, 10, "TR"), ground1))
+surf <- ground[[1]]
+par(mfrow = c(1,2), mar = c(2,2,1,1))
+plot(surf)
+plot(transform(surf, theta = 45))
+plot(transform(surf, 0.5, 0))
+plot(transform(surf, 0.5, method = 'taylor'))
+plot(transform(surf, theta = 1))
+plot(transform(surf, theta = 1, method = 'taylor'))
 }
-

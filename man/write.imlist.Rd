@@ -21,4 +21,3 @@ file <- system.file("extdata", "ground.zip", package = "surf")
 surf <- read.zip(file)
 write.imlist(surf)
 }
-

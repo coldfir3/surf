@@ -14,4 +14,3 @@
 \description{
 Custom multiplication of two \code{imlist} objects
 }
-

@@ -22,4 +22,3 @@ surf <- read.surf(file)
 surf <- surf + 1
 write.cimg(surf)
 }
-

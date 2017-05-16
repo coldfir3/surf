@@ -14,4 +14,3 @@
 \description{
 Custom division of two \code{imlist} objects
 }
-

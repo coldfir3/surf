@@ -6,11 +6,11 @@ Authors@R: c(
   person("Adriano", "Passos", email="adriano.utfpr@gmail.com", role=c("aut","cre")),
   person("Tiago", "Cousseau", email="tcousseau@utfpr.edu.br", role="aut"))
 Description: Surface and topological analysis for tribology based on measuraments. Bla bla bla bla bla bla.
-Depends: R (>= 3.3.0)
+Depends: R (>= 3.3.0), imager
 License: GPL-3
 LazyData: TRUE
-RoxygenNote: 5.0.1
-Imports: imager,
-    zoo,
+RoxygenNote: 6.0.1
+Imports:
     methods,
+    entropy,
     rgenoud
