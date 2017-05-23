@@ -20,3 +20,10 @@
 # ground <- lapply(ground, resize, size_x = 256, size_y = 256, interpolation_type = 5)
 # ground <- as.imlist(ground)
 # devtools::use_data(ground)
+
+
+# ground <- USP_GRO02
+# ground <- imappend(ground, 'z')
+# ground <- imsub(ground, x %inr% (c(1,128) + 460), y %inr% (c(1,128) + 450), z %in% seq(1,160, by = 2))
+# ground <- imsplit(ground, 'z')
+# devtools::use_data(ground)

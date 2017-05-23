@@ -4,11 +4,11 @@
 \alias{register}
 \title{Registration based on the NMI criteria}
 \usage{
-register(surf, targ, method = "gen", par0 = NULL, lower = NULL,
-  upper = NULL, trans = FALSE, control = NULL)
+register(src, tar, method = "gen", par0 = NULL, lower = NULL,
+  upper = NULL, ran = c(0.25, 0.25, 0), control = NULL, verbosity = 2)
 }
 \arguments{
-\item{surf, targ}{cimg objects}
+\item{src, tar}{cimg objects}
 
 \item{method}{character indicating the method to be used}
 
@@ -16,10 +16,11 @@ register(surf, targ, method = "gen", par0 = NULL, lower = NULL,
 
 \item{lower, upper}{numeric vector for the bounds of the optimization problem}
 
-\item{trans}{logical indicating if the relocated surface should
-be returned instead of the registrated parameters}
+\item{ran}{numeric vector for the range around par0 for lower and upper (when not provided)}
 
 \item{control}{list to control the parameters of the optimization routine}
+
+\item{verbosity}{Numeric indicating the level of verbosity is displayed}
 }
 \value{
 bla bla
@@ -30,44 +31,52 @@ bla bla
 \examples{
 # simulated shif to check if the taylor approximation is correct
 imA <- ground[[1]]
-imB <- transform(imA, 0.5, -0.2, 0, method = 'taylor')
-round(register(imB, imA, method = 'taylor'),2)
-# see that the obtained value for the registration parameters are equal
-# to the oposite applyed transformation values.
-##
+imB <- transform(imA, 0.51, -0.23, 0, method = 'taylor')
+round(register(imA, imB, method = 'taylor'),2)
+
+##################
 ## The following examples were exluded from the automatic
 ## run to save compilation time. However, they should all be working.
-# Now lets check the differences between the algorithms for a real image
+# Now lets check the differences between the algorithms for a real pair of images
 \dontrun{
-imB <- ground[[20]]
-(par.taylor <- register(imB, imA, method = 'taylor'))
-(par.grad   <- register(imB, imA, method = 'grad'))
-(par.gen    <- register(imB, imA, method = 'gen'))
-imB.grad <- transform(imB, par.grad[1], par.grad[2], par.grad[3])
-imB.gen  <- transform(imB, par.gen[1], par.gen[2], par.gen[3])
+imB <- ground[[10]]
+par.taylor <- register(imA, imB, method = 'taylor')
+par.grad   <- register(imA, imB, method = 'grad')
+par.gen    <- register(imA, imB, method = 'gen')
+par.sa    <- register(imA, imB, method = 'sa')
+imA.grad <- transform(imA, par.grad[1], par.grad[2], 0)
+imA.gen  <- transform(imA, par.gen[1], par.gen[2], 0)
+imA.sa   <- transform(imA, par.sa[1], par.sa[2], 0)
 NMI(imA,imB)
-NMI(imA,imB.grad)
-NMI(imA,imB.gen)
-par(mfrow = c(1,2))
-plot(rm.outliers(imA - imB.grad))
-plot(rm.outliers(imA - imB.gen))
+NMI(imA.grad,imB)
+NMI(imA.gen,imB)
+NMI(imA.sa,imB)
 }
 # Now, lets see if we can visualize the motion of the sample
 \dontrun{
-pars.taylor <- t(sapply(ground, register, targ = ground[[1]], method = 'taylor'))
-pars.grad   <- t(sapply(ground, register, targ = ground[[1]], method = 'grad'))
-pars.gen    <- t(sapply(ground, register, targ = ground[[1]], method = 'gen'))
+pars.taylor <- t(sapply(ground, register, tar = ground[[1]], method = 'taylor'))
+pars.grad   <- t(sapply(ground, register, tar = ground[[1]], method = 'grad'))
+pars.gen    <- t(sapply(ground, register, tar = ground[[1]], method = 'gen'))
+pars.sa     <- t(sapply(ground, register, tar = ground[[1]], method = 'sa'))
 plot(0, pch = NA, asp = 1,
- xlim = range(rbind(pars.taylor[,1], pars.grad[,1], pars.gen[,1])),
- ylim = range(rbind(pars.taylor[,2], pars.grad[,2], pars.gen[,2])))
+ xlim = range(rbind(pars.taylor, pars.grad, pars.gen, pars.sa)[,1]),
+ ylim = range(rbind(pars.taylor, pars.grad, pars.gen, pars.sa)[,2]))
 points(pars.taylor[,1:2], col = 'orange')
 points(pars.grad[,1:2], col = 'skyblue')
 points(pars.gen[,1:2], col = 'black')
+points(pars.sa[,1:2], col = 'red')
 lines(pars.taylor[,1:2], col = 'orange')
 lines(pars.grad[,1:2], col = 'skyblue')
 lines(pars.gen[,1:2], col = 'black')
-summary(pars.taylor[,3])
-summary(pars.grad[,3])
-summary(pars.gen[,3])
+lines(pars.sa[,1:2], col = 'red')
+plot(0, pch = NA, xlim = c(2,80), ylim = c(0.5,0.7))
+lines(sapply(2:80, function(i) NMI(ground[[1]], transform(ground[[i]],
+ pars.taylor[i,1], pars.taylor[i,2], pars.taylor[i,3]))), col = 'orange')
+lines(sapply(2:80, function(i) NMI(ground[[1]], transform(ground[[i]],
+ pars.grad[i,1], pars.grad[i,2], pars.grad[i,3]))), col = 'skyblue')
+lines(sapply(2:80, function(i) NMI(ground[[1]], transform(ground[[i]],
+ pars.gen[i,1], pars.gen[i,2], pars.gen[i,3]))), col = 'black')
+lines(sapply(2:80, function(i) NMI(ground[[1]], transform(ground[[i]],
+ pars.sa[i,1], pars.sa[i,2], pars.sa[i,3]))), col = 'red')
 }
 }

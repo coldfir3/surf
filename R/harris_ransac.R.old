@@ -1,0 +1,111 @@
+#Corner detection
+
+Harris <- function(im,sigma=2){
+  eps=1.e-10
+  ix=imgradient(im,"x")
+  iy=imgradient(im,"y")
+  ix2=isoblur(ix*ix,sigma,gaussian = T)
+  iy2=isoblur(iy*iy,sigma,gaussian = T)
+  ixy=isoblur(ix*iy,sigma,gaussian = T)
+  (ix2*iy2-ixy*ixy)/(ix2+iy2+eps)
+}
+
+get.corners <- function(im, sigma = 2, thr="95%", border = 16){
+#  blobs <- with(imager::imhessian(Harris(im, sigma)),(xx*yy - xy^2))
+  blobs <- Harris(im, sigma)
+  labels <- imager::label(imager::threshold(blobs, thr))
+  corners <- dplyr::group_by(subset(as.data.frame(labels), value > 0), value)
+  centers <- dplyr::summarise(corners, mx = mean(x), my = mean(y))
+  centers <- subset(centers, mx > border & mx < (nrow(im) - border) & my > border & my < (ncol(im) - border))
+#  centers <- as.data.frame(round(centers))
+  centers <- as.data.frame(centers)
+  return(centers[,-1])
+}
+
+get_orientations <- function(im, sigma = 6){
+  im <- isoblur(im, sigma, gaussian = TRUE)
+  gr <- imgradient(im, 'xy')
+  theta <- with(gr, atan(y/x))
+  return(mean(theta)) #arrumar para outros casos using theta <- hist(theta, plot = FALSE)
+}
+
+get_descriptor_oriented<-function(im,theta,v){
+  im=isoblur(im,6,gaussian = T)
+  stencil <- expand.grid(dx=round(seq(-20,20,5)*scl),dy=round(seq(-20,20,5)*scl))
+  stencil_ext <- expand.grid(dx=round(seq(-30*scl,30*scl,1)),dy=round(seq(-30*scl,30*scl,1)))
+  pm=get.stencil(im,stencil_ext,x=v[,1],y=v[,2])
+  w=sqrt(length(pm))
+  pm=as.cimg(pm,x=w,y=w)
+  imr=imrotate(pm,-theta)
+  ww=round(width(imr)/2)
+  get.stencil(imr,stencil,x=ww,y=ww)
+}
+
+get_descriptors <- function(im, centers){
+  stencil <- expand.grid(dx = seq(-15,15,5), dy = seq(-15,15,5))
+  pm <- t(apply(centers, 1, function(center) get.stencil(im, stencil, x = center[1], y = center[2])))
+  return(pm)
+}
+
+ransac<-function(p1,p2,thresh=100,N=1000){
+  n=nrow(p1)
+  #set.seed(12345)
+  sn=c(1:n)
+  flag=matrix(0,nrow=N,ncol=n)
+  for(i in 1:N){
+    smpl = sample(sn,round(n/2))
+    pp1 = p1[smpl,]
+    pp2 = p2[smpl,]
+    h = est_transformation(pp1,pp2)
+    p = apply_transformation(p1,h)
+    d = rowSums((p-p2)^2)
+    flag[i,]=as.numeric(d<thresh)
+  }
+  sinliers=rowSums(flag)
+  sinliers=sinliers[!is.na(sinliers)]
+  imax=which(sinliers==max(sinliers))[1]
+  inliers=sn[flag[imax,]==1]
+  h=est_transformation(p1[inliers,],p2[inliers,])
+  list(h,inliers)
+}
+
+est_transformation <- function(p1, p2){
+  p1.centroid <- apply(p1, 2, mean)
+  p2.centroid <- apply(p2, 2, mean)
+  return(p1.centroid - p2.centroid)
+}
+
+apply_transformation<- function(p1, par){
+  p2 <- cbind(p1[,1] + par[1], p1[,2] + par[2])
+  return(p2)
+}
+
+est_homograph<-function(P,p){
+
+  xl <- x - xC
+  yl <- y - xC
+  x <-  cs * xl + sn * yl - u + xC
+  y <- -sn * xl + cs * yl - v + xC
+
+
+
+  n=nrow(P)
+  hh=NULL
+  for(i in 1:n){
+    a=t(c(p[i,],1))
+    b=t(c(0,0,0))
+    c=P[i,]
+    d=-c%*%a
+    hh=rbind(hh,cbind(rbind(c(a,b),c(b,a)),d))
+  }
+  h=t(matrix(svd(hh,nv=ncol(hh))$v[,9],nrow=3,ncol=3))
+}
+
+apply_homograph<-function(h,p){
+  p1=t(cbind(p,1))
+  q1=t(h%*%p1)
+  q1=q1/q1[,3]
+  q1[,1:2]
+}
+
+

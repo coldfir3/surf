@@ -4,17 +4,17 @@
 \alias{transform}
 \title{This function performs a rigid body transformation of a surface file}
 \usage{
-transform(surf, u = 0, v = 0, theta = 0, method = "imwarp")
+transform(im, u = 0, v = 0, theta = 0, method = "imwarp")
 }
 \arguments{
-\item{surf}{\code{cimg} object}
+\item{im}{\code{cimg} object}
 
 \item{u, v}{numerical indicating the displacement in the x and y direction (in
 pixels)}
 
 \item{theta}{numerical indicating the angle of rotation (in degrees)}
 
-\item{method}{method for interpolation}
+\item{method}{method for interpolation (one of "taylor" or "imwarp")}
 }
 \value{
 a transformed \code{cimg} object

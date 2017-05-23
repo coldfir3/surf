@@ -1,11 +1,11 @@
 #' This function performs a rigid body transformation of a surface file
 #'
 #' @export
-#' @param surf \code{cimg} object
+#' @param im \code{cimg} object
 #' @param theta numerical indicating the angle of rotation (in degrees)
 #' @param u,v numerical indicating the displacement in the x and y direction (in
 #'   pixels)
-#' @param method method for interpolation
+#' @param method method for interpolation (one of "taylor" or "imwarp")
 #' @return a transformed \code{cimg} object
 #' @examples
 #' surf <- ground[[1]]
@@ -16,34 +16,48 @@
 #' plot(transform(surf, 0.5, method = 'taylor'))
 #' plot(transform(surf, theta = 1))
 #' plot(transform(surf, theta = 1, method = 'taylor'))
-transform <- function(surf, u = 0, v = 0, theta = 0, method = "imwarp"){
+transform <- function(im, u = 0, v = 0, theta = 0, method = "imwarp"){
 
   theta <- theta * pi/180
 
-  xC <- (ncol(surf)+1)/2
-  yC <- (nrow(surf)+1)/2
-
-  sn <- sin(theta)
-  cs <- cos(theta)
-
   if(method == "imwarp"){
-    map <- function(x, y){
-      xl <- x - xC
-      yl <- y - xC
-      x <-  cs * xl + sn * yl - u + xC
-      y <- -sn * xl + cs * yl - v + xC
-      return(list(x = x, y = y))
+    if (theta == 0)
+      map <- function(x, y){
+        x <- x + u
+        y <- y + v
+        return(list(x = x, y = y))
+      }
+    else{
+      xC <- (ncol(im)+1)/2
+      yC <- (nrow(im)+1)/2
+      sn <- sin(theta)
+      cs <- cos(theta)
+      map <- function(x, y){
+        xl <- x - xC
+        yl <- y - xC
+        x <-  cs * xl + sn * yl - u + xC
+        y <- -sn * xl + cs * yl - v + xC
+        return(list(x = x, y = y))
+      }
     }
-    surf <- imager::imwarp(surf, map = map, direction="backward", interpolation = "cubic")
+    im <- imager::imwarp(im, map = map, direction="backward", interpolation = "cubic")
   }
   else if(method == "taylor"){
-    g <- imgradient(surf, "xy")
-    x <- cimg(array(  replicate(nrow(surf), 1:ncol(surf)  - xC), dim(surf)))
-    y <- cimg(array(t(replicate(ncol(surf), 1:nrow(surf)) - yC), dim(surf)))
-    surf <- surf - (u - y*theta + x*theta^2/2) * g$x - (v + x*theta + y*theta^2/2) * g$y
+    g <- imgradient(im, "xy")
+    if (theta == 0){
+      h <- imhessian(im)
+      im <- im + u*g$x + v*g$y + 1/2 * (u^2*h$xx + 2*u*v*h$xy + v^2*h$yy)
+    }
+    else{
+      xC <- (ncol(im)+1)/2
+      yC <- (nrow(im)+1)/2
+      x <- cimg(array(  replicate(nrow(im), 1:ncol(im)  - xC), dim(im)))
+      y <- cimg(array(t(replicate(ncol(im), 1:nrow(im)) - yC), dim(im)))
+      im <- im - (u - y*theta + x*theta^2/2) * g$x - (v + x*theta + y*theta^2/2) * g$y
+    }
   }
   else
     stop('Undefined method')
 
-  return(surf)
+  return(im)
 }
